@@ -1,0 +1,20 @@
+- Home page: sale, banner 
+- Sale page: list sale product
+- Product page: 
+	+ category: /:category-slug
+	
+	+ product detail page: /category-slug/:product-slug (category slug sẽ là category root)
+	
+- Profile page
+- Auth page
+
+
+
+- Viết cho tôi trang detail của sản phẩm, trong trang sẽ có như sơ đồ mô tả dưới đây sẽ là layout ở màn hình laptop, (còn các màn hình nhỏ hơn bạn cho responsive như tiêu chuẩn)
+- Tên sản phẩm
+Bên trái bao gồm các phần theo cột 
+- Card List Hình ảnh sản phẩm 
+- Card chứa thông tin cam kết
+- Card chứa thông số kỹ thuật
+- Card đánh giá
+Bên phải là card chứa các thông tin các khuyến mãi sẽ có, giá , nút thêm vào giỏ hàng, nút mua ngay, xem siêu thị có hàng

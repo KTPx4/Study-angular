@@ -1,0 +1,99 @@
+<div class="error-page">
+    <div class="error-container">
+        <!-- Animated 403 with Lock Icon -->
+        <div class="error-code">
+            <div class="lock-container">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="code-numbers">
+                    <span class="number">4</span>
+                    <span class="number">0</span>
+                    <span class="number">3</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-content">
+            <h1 class="error-title">Truy cập bị từ chối</h1>
+            <p class="error-description">
+                Rất tiếc, bạn không có quyền truy cập vào trang này.
+                <br />
+                Vui lòng đăng nhập hoặc liên hệ quản trị viên để được cấp quyền.
+            </p>
+
+            <!-- Reasons -->
+            <div class="reasons">
+                <h3 class="reasons-title">
+                    <i class="fas fa-info-circle"></i>
+                    Lý do có thể:
+                </h3>
+                <ul class="reasons-list">
+                    <li>
+                        <i class="fas fa-times-circle"></i>
+                        Bạn chưa đăng nhập vào hệ thống
+                    </li>
+                    <li>
+                        <i class="fas fa-times-circle"></i>
+                        Tài khoản của bạn không có quyền truy cập
+                    </li>
+                    <li>
+                        <i class="fas fa-times-circle"></i>
+                        Phiên đăng nhập đã hết hạn
+                    </li>
+                    <li>
+                        <i class="fas fa-times-circle"></i>
+                        Trang yêu cầu quyền quản trị viên
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="error-actions">
+                <button class="btn btn-primary" (click)="goLogin()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng nhập
+                </button>
+                <button class="btn btn-secondary" (click)="goHome()">
+                    <i class="fas fa-home"></i>
+                    Về trang chủ
+                </button>
+                <button class="btn btn-tertiary" (click)="goBack()">
+                    <i class="fas fa-arrow-left"></i>
+                    Quay lại
+                </button>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <div class="help-card">
+                    <i class="fas fa-headset"></i>
+                    <div class="help-content">
+                        <h4>Cần hỗ trợ?</h4>
+                        <p>Liên hệ: support&#64;ecommerce.vn</p>
+                    </div>
+                </div>
+                <div class="help-card">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="help-content">
+                        <h4>Hotline</h4>
+                        <p>1800 6969 (24/7)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shield Animation -->
+        <div class="shield-animation">
+            <div class="shield">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="warning-signs">
+                <i class="fas fa-exclamation-triangle sign"></i>
+                <i class="fas fa-exclamation-triangle sign"></i>
+                <i class="fas fa-exclamation-triangle sign"></i>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,333 @@
+<div class="profile-container" *ngIf="user">
+    <div class="profile-layout">
+        <!-- Left Column - Avatar & Basic Info -->
+        <div class="left-column">
+            <div class="card avatar-card">
+                <div class="avatar-section">
+                    <div class="avatar-wrapper">
+                        <img [src]="user.avatar" [alt]="user.fullName" (error)="handleAvatarError($event)"
+                            class="avatar-image" />
+                        <button class="btn-edit-avatar">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <h2 class="user-name">{{ user.fullName }}</h2>
+                    <span class="user-role">
+                        <i class="fas fa-user-shield"></i>
+                        {{ user.role }}
+                    </span>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-shopping-bag"></i>
+                        <div class="stat-content">
+                            <span class="stat-value">24</span>
+                            <span class="stat-label">Đơn hàng</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-heart"></i>
+                        <div class="stat-content">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">Yêu thích</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-comment-dots"></i>
+                        <div class="stat-content">
+                            <span class="stat-value">8</span>
+                            <span class="stat-label">Đánh giá</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Detailed Info -->
+        <div class="right-column">
+            <!-- Personal Information -->
+            <div class="card info-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-user-circle"></i>
+                        Thông tin cá nhân
+                    </h3>
+                    <button class="btn-edit">
+                        <i class="fas fa-edit"></i>
+                        Chỉnh sửa
+                    </button>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">
+                            <i class="fas fa-user"></i>
+                            Username
+                        </span>
+                        <span class="info-value">{{ user.username }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">
+                            <i class="fas fa-id-card"></i>
+                            Họ và tên
+                        </span>
+                        <span class="info-value">{{ user.fullName }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">
+                            <i class="fas fa-envelope"></i>
+                            Email
+                        </span>
+                        <span class="info-value">{{ user.email }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">
+                            <i class="fas fa-phone"></i>
+                            Số điện thoại
+                        </span>
+                        <span class="info-value">{{ user.phone }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">
+                            <i class="fas fa-birthday-cake"></i>
+                            Ngày sinh
+                        </span>
+                        <span class="info-value">{{ user.dateOfBirth || 'Chưa cập nhật' }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">
+                            <i class="fas fa-user-tag"></i>
+                            Vai trò
+                        </span>
+                        <span class="info-value">{{ user.role }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Address -->
+            <div class="card address-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Địa chỉ mặc định
+                    </h3>
+                    <button class="btn-edit" (click)="openAddressModal()">
+                        <i class="fas fa-exchange-alt"></i>
+                        Đổi địa chỉ
+                    </button>
+                </div>
+
+                <div class="address-content" *ngIf="getDefaultAddress(); else noAddress">
+                    <div class="address-main">
+                        <div class="address-label">
+                            <i class="fas fa-home"></i>
+                            {{ getDefaultAddress()?.label }}
+                        </div>
+                        <div class="address-info">
+                            <p class="address-name">{{ getDefaultAddress()?.fullName }}</p>
+                            <p class="address-phone">
+                                <i class="fas fa-phone-alt"></i>
+                                {{ getDefaultAddress()?.phone }}
+                            </p>
+                            <p class="address-detail">
+                                <i class="fas fa-map-marked-alt"></i>
+                                {{ getFullAddress(getDefaultAddress()!) }}
+                            </p>
+                        </div>
+                    </div>
+                    <span class="badge-default">Mặc định</span>
+                </div>
+
+                <ng-template #noAddress>
+                    <div class="no-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Chưa có địa chỉ mặc định</p>
+                        <button class="btn btn-primary" (click)="openAddressModal()">
+                            Thêm địa chỉ
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Address Selection Modal -->
+<div class="modal-backdrop" *ngIf="isAddressModalOpen" (click)="closeAddressModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fas fa-map-marked-alt"></i>
+                Chọn địa chỉ
+            </h3>
+            <button class="close-button" (click)="closeAddressModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <button class="btn-add-address" (click)="openAddAddressModal()">
+                <i class="fas fa-plus-circle"></i>
+                Thêm địa chỉ mới
+            </button>
+
+            <div class="address-list">
+                <div *ngFor="let address of user?.addresses" class="address-item" [class.selected]="address.isDefault"
+                    (click)="selectAddress(address)">
+                    <div class="address-item-header">
+                        <div class="address-item-label">
+                            <i class="fas fa-home"></i>
+                            {{ address.label }}
+                        </div>
+                        <div class="address-item-actions">
+                            <button class="btn-icon" (click)="editAddress(address, $event)" title="Chỉnh sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-delete" (click)="deleteAddress(address.id, $event)" title="Xóa"
+                                *ngIf="user && user.addresses.length > 1">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="address-item-content">
+                        <p class="address-name">{{ address.fullName }}</p>
+                        <p class="address-phone">
+                            <i class="fas fa-phone-alt"></i>
+                            {{ address.phone }}
+                        </p>
+                        <p class="address-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ getFullAddress(address) }}
+                        </p>
+                    </div>
+
+                    <div class="address-item-footer">
+                        <span class="badge-default" *ngIf="address.isDefault">Mặc định</span>
+                        <span class="select-hint" *ngIf="!address.isDefault">Nhấn để chọn làm mặc định</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Address Modal -->
+<div class="modal-backdrop" *ngIf="isAddAddressModalOpen" (click)="closeAddAddressModal()">
+    <div class="modal-container modal-form" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fas fa-plus-circle"></i>
+                Thêm địa chỉ mới
+            </h3>
+            <button class="close-button" (click)="closeAddAddressModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form class="address-form">
+                <div class="form-group">
+                    <label for="label">
+                        <i class="fas fa-tag"></i>
+                        Nhãn địa chỉ
+                    </label>
+                    <select id="label" [(ngModel)]="newAddress.label" name="label" class="form-control">
+                        <option value="Nhà riêng">Nhà riêng</option>
+                        <option value="Văn phòng">Văn phòng</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">
+                            <i class="fas fa-user"></i>
+                            Họ và tên
+                        </label>
+                        <input type="text" id="fullName" [(ngModel)]="newAddress.fullName" name="fullName"
+                            class="form-control" placeholder="Nhập họ tên người nhận" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">
+                            <i class="fas fa-phone"></i>
+                            Số điện thoại
+                        </label>
+                        <input type="tel" id="phone" [(ngModel)]="newAddress.phone" name="phone" class="form-control"
+                            placeholder="Nhập số điện thoại" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">
+                        <i class="fas fa-city"></i>
+                        Tỉnh/Thành phố
+                    </label>
+                    <select id="city" [(ngModel)]="newAddress.city" name="city" class="form-control">
+                        <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                        <option value="Hà Nội">Hà Nội</option>
+                        <option value="Đà Nẵng">Đà Nẵng</option>
+                        <option value="Cần Thơ">Cần Thơ</option>
+                        <option value="Hải Phòng">Hải Phòng</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="district">
+                            <i class="fas fa-building"></i>
+                            Quận/Huyện
+                        </label>
+                        <input type="text" id="district" [(ngModel)]="newAddress.district" name="district"
+                            class="form-control" placeholder="Nhập quận/huyện" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ward">
+                            <i class="fas fa-map-signs"></i>
+                            Phường/Xã
+                        </label>
+                        <input type="text" id="ward" [(ngModel)]="newAddress.ward" name="ward" class="form-control"
+                            placeholder="Nhập phường/xã" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="street">
+                        <i class="fas fa-road"></i>
+                        Địa chỉ cụ thể
+                    </label>
+                    <input type="text" id="street" [(ngModel)]="newAddress.street" name="street" class="form-control"
+                        placeholder="Số nhà, tên đường..." required />
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" [(ngModel)]="newAddress.isDefault" name="isDefault" />
+                        <span class="checkbox-custom"></span>
+                        Đặt làm địa chỉ mặc định
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeAddAddressModal()">
+                <i class="fas fa-times"></i>
+                Hủy
+            </button>
+            <button class="btn btn-primary" (click)="saveNewAddress()" [disabled]="!validateAddress()">
+                <i class="fas fa-save"></i>
+                Lưu địa chỉ
+            </button>
+        </div>
+    </div>
+</div>

@@ -133,7 +133,17 @@ body {
 .bg-white {
     background-color: var(--bg-white) !important;
 }
-
+/* btn */
+.btn-primary-custom{
+    background-color: var(--primary-color) !important;
+    color: var(--text-white) !important;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-semibold);
+    cursor: pointer !important;
+    transition: all var(--transition-normal);
+}
 /* Text Colors */
 .text-primary {
     color: var(--primary-color) !important;

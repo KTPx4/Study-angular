@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-notfound',
+  selector: 'app-forbidden',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './notfound.component.html',
-  styleUrl: './notfound.component.css'
+  templateUrl: './forbidden.component.html',
+  styleUrl: './forbidden.component.css'
 })
-export class NotfoundComponent {
+export class ForbiddenComponent {
   constructor(private router: Router) { }
 
   goHome(): void {
@@ -18,6 +18,10 @@ export class NotfoundComponent {
 
   goBack(): void {
     window.history.back();
+  }
+
+  goLogin(): void {
+    this.router.navigate(['/auth/login']);
   }
 }
 

@@ -18,12 +18,22 @@ export const routes: Routes = [
                 path: '',
                 loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
             },
-            {path: ":category", loadComponent: () => import('./pages/product/list-product/list-product.component').then(m => m.ListProductComponent)},
-            {path: ":category/:slug", loadComponent: () => import('./pages/product/detail-product/detail-product.component').then(m => m.DetailProductComponent)},
             {
                 path: 'cart',
                 loadComponent: () => import('./pages/cart/cart.component').then(m => m.CartComponent)
             },
+            {
+                path: 'forbidden',
+                loadComponent: () => import('./pages/forbidden/forbidden.component').then(m => m.ForbiddenComponent)
+            },
+            {
+                path: 'profile',
+                loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent)
+            },
+            { path: ":category", loadComponent: () => import('./pages/product/list-product/list-product.component').then(m => m.ListProductComponent) },
+            { path: ":category/:slug", loadComponent: () => import('./pages/product/detail-product/detail-product.component').then(m => m.DetailProductComponent) },
+            
+
         ]
     },
     {

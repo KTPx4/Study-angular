@@ -1,1 +1,98 @@
-<h3>NotFound Page</h3>
+<div class="error-page">
+    <div class="error-container">
+        <!-- Animated 404 -->
+        <div class="error-code">
+            <div class="digit">
+                <span class="number">4</span>
+                <div class="icon-wrapper">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div class="digit">
+                <span class="number">0</span>
+                <div class="icon-wrapper">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+            </div>
+            <div class="digit">
+                <span class="number">4</span>
+                <div class="icon-wrapper">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-content">
+            <h1 class="error-title">Trang không tìm thấy</h1>
+            <p class="error-description">
+                Rất tiếc, trang bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
+                <br />
+                Vui lòng kiểm tra lại URL hoặc quay về trang chủ.
+            </p>
+
+            <!-- Search Suggestions -->
+            <div class="suggestions">
+                <h3 class="suggestions-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Gợi ý cho bạn:
+                </h3>
+                <ul class="suggestions-list">
+                    <li>
+                        <i class="fas fa-check"></i>
+                        Kiểm tra lại đường dẫn URL
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        Sử dụng thanh tìm kiếm để tìm sản phẩm
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        Quay về trang chủ và khám phá sản phẩm mới
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        Liên hệ với chúng tôi nếu cần hỗ trợ
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="error-actions">
+                <button class="btn btn-primary" (click)="goHome()">
+                    <i class="fas fa-home"></i>
+                    Về trang chủ
+                </button>
+                <button class="btn btn-secondary" (click)="goBack()">
+                    <i class="fas fa-arrow-left"></i>
+                    Quay lại
+                </button>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <a [routerLink]="['/']" class="quick-link">
+                    <i class="fas fa-shopping-bag"></i>
+                    Sản phẩm
+                </a>
+                <a [routerLink]="['/cart']" class="quick-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    Giỏ hàng
+                </a>
+                <a [routerLink]="['/profile']" class="quick-link">
+                    <i class="fas fa-user"></i>
+                    Tài khoản
+                </a>
+            </div>
+        </div>
+
+        <!-- Floating Icons Animation -->
+        <div class="floating-icons">
+            <i class="fas fa-shopping-bag float-icon"></i>
+            <i class="fas fa-shopping-cart float-icon"></i>
+            <i class="fas fa-heart float-icon"></i>
+            <i class="fas fa-star float-icon"></i>
+            <i class="fas fa-tag float-icon"></i>
+        </div>
+    </div>
+</div>
