@@ -1,0 +1,66 @@
+<div class="product-card" [routerLink]="['/products/product-detail', product.id]">
+    <!-- Promotion Label -->
+    <div class="promotion-label" *ngIf="product.promotionLabel">
+        <span>{{ product.promotionLabel }}</span>
+    </div>
+
+    <!-- Product Image -->
+    <div class="product-image-wrapper">
+        <img [src]="product.image" [alt]="product.name" class="product-image">
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info">
+        <!-- Product Name -->
+        <h3 class="product-name">{{ product.name }}</h3>
+
+        <!-- Specifications -->
+        <div class="product-specs" *ngIf="product.specifications && product.specifications.length > 0">
+            <span *ngFor="let spec of product.specifications" class="spec-badge">
+                {{ spec }}
+            </span>
+        </div>
+
+        <!-- Storage Options -->
+        <div class="storage-options" *ngIf="product.storageOptions && product.storageOptions.length > 0">
+            <button *ngFor="let option of product.storageOptions" class="storage-btn"
+                [class.active]="option === product.storageOptions[0]">
+                {{ option }}
+            </button>
+        </div>
+
+        <!-- Price Section -->
+        <div class="price-section">
+            <div class="price-row">
+                <span class="current-price">{{ formatPrice(product.price) }}₫</span>
+                <span class="discount-badge" *ngIf="discountPercent > 0">
+                    -{{ discountPercent }}%
+                </span>
+            </div>
+            <div class="original-price" *ngIf="product.originalPrice">
+                Giá cũ {{ formatPrice(product.originalPrice) }}₫
+            </div>
+        </div>
+
+        <!-- Gift/Promotion -->
+        <div class="gift-section" *ngIf="product.gift">
+            <i class="fas fa-gift"></i>
+            <span>{{ product.gift }}</span>
+        </div>
+
+        <!-- Rating and Stock -->
+        <div class="footer-section">
+            <div class="rating" *ngIf="product.rating">
+                <i class="fas fa-star"></i>
+                <span class="rating-value">{{ product.rating }}</span>
+                <span class="review-count" *ngIf="product.reviewCount">
+                    ({{ product.reviewCount }}k)
+                </span>
+            </div>
+            <div class="stock-status" *ngIf="product.stockStatus">
+                <i class="fas fa-circle-check"></i>
+                <span>{{ product.stockStatus }}</span>
+            </div>
+        </div>
+    </div>
+</div>

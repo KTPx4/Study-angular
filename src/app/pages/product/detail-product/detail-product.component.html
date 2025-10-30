@@ -1,1 +1,227 @@
-<p>detail-product works!</p>
+<div class="detail-product-container" *ngIf="product">
+    <!-- Product Name (Mobile/Tablet) -->
+    <div class="product-name-mobile">
+        <h1>{{ product.name }}</h1>
+        <div class="rating-info">
+            <div class="stars">
+                <i *ngFor="let star of getStarArray(product.rating || 0)"
+                    [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+            </div>
+            <span class="rating-text">{{ product.rating }} ({{ product.reviewCount }} đánh giá)</span>
+        </div>
+    </div>
+
+    <div class="detail-layout">
+        <!-- Left Column -->
+        <div class="left-column">
+            <!-- Product Name (Desktop) -->
+            <div class="product-name-desktop">
+                <h1>{{ product.name }}</h1>
+                <div class="rating-info">
+                    <div class="stars">
+                        <i *ngFor="let star of getStarArray(product.rating || 0)"
+                            [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+                    </div>
+                    <span class="rating-text">{{ product.rating }} ({{ product.reviewCount }} đánh giá)</span>
+                </div>
+            </div>
+
+            <!-- Images Card -->
+            <div class="card images-card">
+                <div class="main-image">
+                    <img [src]="selectedImage" [alt]="product.name" />
+                    <div class="badge-container">
+                        <span class="badge badge-new" *ngIf="product.isNew">Mới</span>
+                        <span class="badge badge-discount" *ngIf="product.discount">-{{ product.discount }}%</span>
+                    </div>
+                </div>
+                <div class="thumbnail-list">
+                    <div *ngFor="let img of productImages" class="thumbnail" [class.active]="selectedImage === img.url"
+                        (click)="selectImage(img.url)">
+                        <img [src]="img.url" [alt]="img.alt" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Commitments Card -->
+            <div class="card commitments-card">
+                <h3 class="card-title">
+                    <i class="fas fa-shield-check"></i>
+                    Cam kết từ cửa hàng
+                </h3>
+                <div class="commitments-grid">
+                    <div *ngFor="let item of commitments" class="commitment-item">
+                        <i class="fas" [class]="item.icon"></i>
+                        <div class="commitment-content">
+                            <h4>{{ item.title }}</h4>
+                            <p>{{ item.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specifications Card -->
+            <div class="card specifications-card">
+                <h3 class="card-title">
+                    <i class="fas fa-info-circle"></i>
+                    Thông số kỹ thuật
+                </h3>
+                <div class="specifications-list">
+                    <div *ngFor="let spec of specifications" class="spec-item">
+                        <span class="spec-label">{{ spec.label }}</span>
+                        <span class="spec-value">{{ spec.value }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Card -->
+            <div class="card reviews-card">
+                <div class="reviews-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-comments"></i>
+                        Đánh giá sản phẩm
+                    </h3>
+                    <div class="reviews-summary">
+                        <div class="average-rating">
+                            <span class="rating-number">{{ averageRating }}</span>
+                            <div class="stars">
+                                <i *ngFor="let star of getStarArray(averageRating)"
+                                    [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+                            </div>
+                            <span class="total-reviews">{{ totalReviews }} đánh giá</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reviews-list">
+                    <div *ngFor="let review of reviews" class="review-item">
+                        <div class="review-header">
+                            <img [src]="review.avatar" [alt]="review.userName" class="user-avatar" />
+                            <div class="review-info">
+                                <h4 class="user-name">{{ review.userName }}</h4>
+                                <div class="review-meta">
+                                    <div class="stars">
+                                        <i *ngFor="let star of getStarArray(review.rating)"
+                                            [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+                                    </div>
+                                    <span class="review-date">{{ review.date }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="review-comment">{{ review.comment }}</p>
+                        <div class="review-actions">
+                            <button class="btn-like">
+                                <i class="far fa-thumbs-up"></i>
+                                Hữu ích ({{ review.likes }})
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-view-all">
+                    Xem tất cả {{ totalReviews }} đánh giá
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-column">
+            <div class="card purchase-card sticky">
+                <!-- Price Section -->
+                <div class="price-section">
+                    <div class="current-price">{{ formatPrice(product.price) }}</div>
+                    <div class="original-price" *ngIf="product.originalPrice">
+                        {{ formatPrice(product.originalPrice) }}
+                    </div>
+                    <div class="price-discount" *ngIf="product.discount">
+                        Tiết kiệm {{ formatPrice(product.originalPrice! - product.price) }}
+                    </div>
+                </div>
+
+                <!-- Promotions Section -->
+                <div class="promotions-section" *ngIf="promotions.length > 0">
+                    <h4 class="section-title">
+                        <i class="fas fa-gift"></i>
+                        Khuyến mãi
+                    </h4>
+                    <ul class="promotions-list">
+                        <li *ngFor="let promo of promotions">
+                            <i class="fas fa-check-circle"></i>
+                            {{ promo }}
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Storage Options -->
+                <div class="options-section" *ngIf="product.storageOptions && product.storageOptions.length > 0">
+                    <h4 class="section-title">Chọn dung lượng</h4>
+                    <div class="options-grid">
+                        <button *ngFor="let storage of product.storageOptions" class="option-btn"
+                            [class.active]="selectedStorage === storage" (click)="selectStorage(storage)">
+                            {{ storage }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Color Options -->
+                <div class="options-section" *ngIf="product.colorOptions && product.colorOptions.length > 0">
+                    <h4 class="section-title">Chọn màu sắc</h4>
+                    <div class="options-grid">
+                        <button *ngFor="let color of product.colorOptions" class="option-btn"
+                            [class.active]="selectedColor === color" (click)="selectColor(color)">
+                            {{ color }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quantity Selector -->
+                <div class="quantity-section">
+                    <h4 class="section-title">Số lượng</h4>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" (click)="decreaseQuantity()">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" [value]="quantity" readonly />
+                        <button class="quantity-btn" (click)="increaseQuantity()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <span class="stock-info">Còn {{ product.stock || 0 }} sản phẩm</span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-buy-now" (click)="buyNow()">
+                        <i class="fas fa-shopping-cart"></i>
+                        Mua ngay
+                    </button>
+                    <button class="btn btn-add-cart" (click)="addToCart()">
+                        <i class="fas fa-cart-plus"></i>
+                        Thêm vào giỏ
+                    </button>
+                    <button class="btn btn-check-store" (click)="checkStore()">
+                        <i class="fas fa-store"></i>
+                        Xem siêu thị có hàng
+                    </button>
+                </div>
+
+                <!-- Support Info -->
+                <div class="support-info">
+                    <div class="support-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <strong>Hotline:</strong> 1800 6969
+                        </div>
+                    </div>
+                    <div class="support-item">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <strong>Hỗ trợ:</strong> 24/7
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

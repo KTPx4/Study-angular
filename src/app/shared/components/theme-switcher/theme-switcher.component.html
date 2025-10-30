@@ -1,0 +1,74 @@
+<!-- Theme Button -->
+<button class="theme-button" (click)="openModal()" title="Chọn theme">
+    <i class="fas fa-palette"></i>
+    <!-- <span class="d-none d-lg-inline ms-2">Theme</span> -->
+</button>
+
+<!-- Modal -->
+<div class="theme-modal-backdrop" *ngIf="isModalOpen" (click)="onBackdropClick($event)">
+    <div class="theme-modal">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h2 class="modal-title">
+                <i class="fas fa-palette me-2"></i>
+                Chọn Theme
+            </h2>
+            <button class="close-button" (click)="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <p class="modal-description">
+                Chọn theme phù hợp với phong cách của bạn. Thay đổi sẽ được lưu tự động.
+            </p>
+
+            <!-- Theme Grid -->
+            <div class="theme-grid">
+                <div *ngFor="let theme of themes" class="theme-card" [class.active]="isCurrentTheme(theme.id)"
+                    (click)="selectTheme(theme.id)">
+
+                    <!-- Theme Preview Colors -->
+                    <div class="theme-preview">
+                        <div class="color-preview">
+                            <div class="color-box" [style.background]="theme.preview.primary"></div>
+                            <div class="color-box" [style.background]="theme.preview.secondary"></div>
+                            <div class="color-box" [style.background]="theme.preview.accent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Theme Info -->
+                    <div class="theme-info">
+                        <h3 class="theme-name">{{ theme.name }}</h3>
+                        <p class="theme-description">{{ theme.description }}</p>
+                    </div>
+
+                    <!-- Active Badge -->
+                    <div class="active-badge" *ngIf="isCurrentTheme(theme.id)">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Đang dùng</span>
+                    </div>
+
+                    <!-- Hover Overlay -->
+                    <div class="hover-overlay">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Chọn theme này</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+            <div class="footer-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <span>Theme được lưu tự động và áp dụng ngay lập tức</span>
+            </div>
+            <button class="btn-close-modal" (click)="closeModal()">
+                <i class="fas fa-times me-2"></i>
+                Đóng
+            </button>
+        </div>
+    </div>
+</div>

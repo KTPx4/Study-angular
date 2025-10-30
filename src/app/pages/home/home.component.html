@@ -1,1 +1,41 @@
-<h5>THIS HOME</h5>
+<div class="container py-4">
+    <!-- Hero Section -->
+    <section class="hero-section mb-5">
+        <div class="hero-content text-center">
+            <h1 class="display-4 fw-bold mb-3">Chào mừng đến ShopTech</h1>
+            <p class="lead text-secondary">Khám phá những sản phẩm công nghệ hàng đầu với giá tốt nhất</p>
+        </div>
+    </section>
+
+    <!-- Product Section -->
+    <section class="product-section">
+        <div class="section-header mb-4">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt me-2"></i>
+                Điện thoại nổi bật
+            </h2>
+            <p class="text-muted">Các sản phẩm mới nhất và được yêu thích nhất</p>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="row g-3 g-md-4">
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2" *ngFor="let product of products">
+                <app-product-card [product]="product"></app-product-card>
+            </div>
+        </div>
+    </section>
+
+    <!-- More Sections -->
+    <section class="mt-5">
+        <div class="section-header mb-4">
+            <h2 class="section-title">
+                <i class="fas fa-laptop me-2"></i>
+                Laptop Gaming
+            </h2>
+        </div>
+        <div class="text-center text-muted py-5">
+            <i class="fas fa-box-open fa-3x mb-3"></i>
+            <p>Sản phẩm đang được cập nhật...</p>
+        </div>
+    </section>
+</div>

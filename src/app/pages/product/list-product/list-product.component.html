@@ -1,1 +1,34 @@
-<p>list-product works!</p>
+<div class="list-product-container">
+    <!-- Filter Component -->
+    <app-product-filter [categories]="categoryOptions" [brands]="brandOptions" [priceRange]="priceRangeOptions"
+        (filterChange)="onFilterChange($event)"></app-product-filter>
+
+    <!-- Products Header -->
+    <div class="products-header">
+        <h2 class="products-title">
+            <i class="fas fa-mobile-alt"></i>
+            Điện thoại
+        </h2>
+        <div class="products-count">
+            Tìm thấy <strong>{{ totalProducts }}</strong> sản phẩm
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Đang tải sản phẩm...</p>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" *ngIf="!isLoading && products.length > 0">
+        <app-product-card *ngFor="let product of products" [product]="product"></app-product-card>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && products.length === 0">
+        <i class="fas fa-search"></i>
+        <h3>Không tìm thấy sản phẩm</h3>
+        <p>Vui lòng thử lại với bộ lọc khác</p>
+    </div>
+</div>

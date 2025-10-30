@@ -1,0 +1,454 @@
+/* Floating Theme Button */
+.theme-button {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 102, 204, 0.4);
+    z-index: var(--z-fixed);
+    animation: floatPulse 3s ease-in-out infinite;
+}
+
+.theme-button:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.6);
+}
+
+.theme-button:active {
+    transform: scale(0.95);
+}
+
+.theme-button i {
+    font-size: 1.5rem;
+    color: var(--text-white);
+}
+
+.theme-button span {
+    display: none;
+    /* Ẩn text trên floating button */
+}
+
+/* Floating Animation */
+@keyframes floatPulse {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        box-shadow: 0 4px 16px rgba(0, 102, 204, 0.4);
+    }
+
+    50% {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 102, 204, 0.5);
+    }
+}
+
+/* Ripple effect on click */
+.theme-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.theme-button:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+/* Mobile adjustments for floating button */
+@media (max-width: 768px) {
+    .theme-button {
+        width: 56px;
+        height: 56px;
+        left: 16px;
+        bottom: 16px;
+    }
+
+    .theme-button i {
+        font-size: 1.3rem;
+    }
+}
+
+/* Tooltip for floating button */
+.theme-button::after {
+    content: 'Đổi theme';
+    position: absolute;
+    left: 75px;
+    background: var(--text-primary);
+    color: var(--text-white);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-lg);
+    font-size: var(--font-sm);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.theme-button:hover::after {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .theme-button::after {
+        display: none;
+        /* Ẩn tooltip trên mobile */
+    }
+}
+
+
+/* Modal Backdrop */
+.theme-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    padding: 1rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Container */
+.theme-modal {
+    background: var(--bg-white);
+    border-radius: var(--radius-xxl);
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modal Header */
+.modal-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--primary-gradient);
+    color: var(--text-white);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: var(--font-bold);
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.close-button {
+    background: transparent;
+    border: none;
+    color: var(--text-white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-description {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: var(--font-md);
+    text-align: center;
+}
+
+/* Theme Grid */
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Theme Card */
+.theme-card {
+    background: var(--bg-white);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.theme-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+
+.theme-card.active {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+}
+
+/* Theme Preview */
+.theme-preview {
+    padding: 1.5rem;
+    background: var(--bg-light);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.color-preview {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.color-box {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform var(--transition-fast);
+}
+
+.theme-card:hover .color-box {
+    transform: scale(1.1);
+}
+
+/* Theme Info */
+.theme-info {
+    padding: 1.25rem;
+}
+
+.theme-name {
+    font-size: 1.1rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.theme-description {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Active Badge */
+.active-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary-color);
+    color: var(--text-white);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-md);
+    font-size: var(--font-xs);
+    font-weight: var(--font-semibold);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: var(--shadow-sm);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Hover Overlay */
+.hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 102, 204, 0.95);
+    color: var(--text-white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    font-weight: var(--font-semibold);
+}
+
+.theme-card:not(.active):hover .hover-overlay {
+    opacity: 1;
+}
+
+.hover-overlay i {
+    font-size: 2rem;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 1.25rem 2rem;
+    border-top: 2px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-light);
+}
+
+.footer-info {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    display: flex;
+    align-items: center;
+}
+
+.btn-close-modal {
+    background: var(--primary-color);
+    color: var(--text-white);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-semibold);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-close-modal:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .theme-modal {
+        max-height: 95vh;
+        margin: 0.5rem;
+    }
+
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-title {
+        font-size: 1.25rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .theme-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .footer-info {
+        text-align: center;
+        font-size: 0.75rem;
+    }
+
+    .theme-button span {
+        display: none !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .color-box {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Scrollbar for Modal Body */
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: var(--bg-light);
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}

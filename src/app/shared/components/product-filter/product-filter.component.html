@@ -1,0 +1,149 @@
+<!-- Filter Button -->
+<div class="filter-container">
+    <button class="filter-button" (click)="openModal()">
+        <i class="fas fa-filter"></i>
+        <span>Bộ lọc</span>
+        <span class="filter-badge" *ngIf="getActiveFilterCount() > 0">
+            {{ getActiveFilterCount() }}
+        </span>
+    </button>
+
+    <!-- Quick Sort -->
+    <div class="quick-sort">
+        <select class="sort-select" [(ngModel)]="sortBy" (change)="applyFilter()">
+            <option *ngFor="let option of sortOptions" [value]="option.value">
+                {{ option.label }}
+            </option>
+        </select>
+    </div>
+
+    <!-- Active Filters Display -->
+    <div class="active-filters" *ngIf="getActiveFilterCount() > 0">
+        <span class="active-filter-text">
+            <i class="fas fa-check-circle"></i>
+            {{ getActiveFilterCount() }} bộ lọc đang áp dụng
+        </span>
+        <button class="clear-filter-btn" (click)="resetFilter()">
+            <i class="fas fa-times"></i>
+            Xóa tất cả
+        </button>
+    </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="filter-modal-backdrop" *ngIf="isModalOpen" (click)="onBackdropClick($event)">
+    <div class="filter-modal">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h2 class="modal-title">
+                <i class="fas fa-sliders-h me-2"></i>
+                Bộ lọc sản phẩm
+            </h2>
+            <button class="close-button" (click)="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <!-- Category Filter -->
+            <div class="filter-section">
+                <h3 class="filter-title">
+                    <i class="fas fa-th-large me-2"></i>
+                    Danh mục
+                </h3>
+                <div class="filter-options">
+                    <label class="filter-checkbox" *ngFor="let category of categories">
+                        <input type="checkbox" [checked]="isCategorySelected(category)"
+                            (change)="toggleCategory(category)">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">{{ category }}</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Brand Filter -->
+            <div class="filter-section">
+                <h3 class="filter-title">
+                    <i class="fas fa-tag me-2"></i>
+                    Thương hiệu
+                </h3>
+                <div class="filter-options">
+                    <label class="filter-checkbox" *ngFor="let brand of brands">
+                        <input type="checkbox" [checked]="isBrandSelected(brand)" (change)="toggleBrand(brand)">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">{{ brand }}</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Price Range Filter -->
+            <div class="filter-section">
+                <h3 class="filter-title">
+                    <i class="fas fa-dollar-sign me-2"></i>
+                    Khoảng giá
+                </h3>
+                <div class="price-range">
+                    <div class="price-inputs">
+                        <div class="price-input-group">
+                            <label>Từ</label>
+                            <input type="range" [(ngModel)]="minPrice" [min]="priceRange.min" [max]="maxPrice"
+                                step="1000000" class="price-slider">
+                            <span class="price-value">{{ formatPrice(minPrice) }}</span>
+                        </div>
+                        <div class="price-separator">-</div>
+                        <div class="price-input-group">
+                            <label>Đến</label>
+                            <input type="range" [(ngModel)]="maxPrice" [min]="minPrice" [max]="priceRange.max"
+                                step="1000000" class="price-slider">
+                            <span class="price-value">{{ formatPrice(maxPrice) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rating Filter -->
+            <div class="filter-section">
+                <h3 class="filter-title">
+                    <i class="fas fa-star me-2"></i>
+                    Đánh giá
+                </h3>
+                <div class="rating-options">
+                    <label class="rating-option" *ngFor="let rating of ratingOptions"
+                        [class.active]="selectedRating === rating.value">
+                        <input type="radio" name="rating" [value]="rating.value" [(ngModel)]="selectedRating">
+                        <span class="rating-label">
+                            <span class="rating-stars">{{ rating.icon }}</span>
+                            <span>{{ rating.label }}</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Stock Filter -->
+            <div class="filter-section">
+                <h3 class="filter-title">
+                    <i class="fas fa-box me-2"></i>
+                    Tình trạng
+                </h3>
+                <label class="toggle-switch">
+                    <input type="checkbox" [(ngModel)]="inStockOnly">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-label">Chỉ hiển thị hàng còn trong kho</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+            <button class="btn-reset" (click)="resetFilter()">
+                <i class="fas fa-undo me-2"></i>
+                Đặt lại
+            </button>
+            <button class="btn-apply" (click)="applyFilter()">
+                <i class="fas fa-check me-2"></i>
+                Áp dụng ({{ getActiveFilterCount() }})
+            </button>
+        </div>
+    </div>
+</div>
