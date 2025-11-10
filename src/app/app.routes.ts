@@ -29,10 +29,17 @@ export const routes: Routes = [
                 path: 'profile',
                 loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent)
             },
-            { 
-                path: ":category", 
-                loadComponent: () => import('./pages/product/list-product/list-product.component').then(m => m.ListProductComponent) },
-            { path: ":category/:slug", loadComponent: () => import('./pages/product/detail-product/detail-product.component').then(m => m.DetailProductComponent) },
+            {
+                path: 'product',
+                children: [
+                    { 
+                        path: ":category", 
+                        loadComponent: () => import('./pages/product/list-product/list-product.component').then(m => m.ListProductComponent) },
+                    {
+                        path: ":category/:slug", loadComponent: () => import('./pages/product/detail-product/detail-product.component').then(m => m.DetailProductComponent)
+                    },
+                ]
+            }
             
 
         ]

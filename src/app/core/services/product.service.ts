@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { Product } from '../../shared/models/product.model';
 import { ProductFilter } from '../../shared/models/filter.model';
-
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { ApiEndpoint } from '../config/constants/api-endpoint.constant';
 @Injectable({
     providedIn: 'root'
 })
 export class ProductService {
+    private apiGetUrl = `${environment.apiUrl}/${ApiEndpoint.Products.GetAll}`;
     private productsSubject = new BehaviorSubject<Product[]>([]);
     public products$: Observable<Product[]> = this.productsSubject.asObservable();
 
@@ -124,15 +127,34 @@ export class ProductService {
             stockStatus: 'Có sẵn'
         }
     ];
-
-    constructor() {
-        this.productsSubject.next(this.allProducts);
+    
+    constructor(private http: HttpClient) {
+        // Có thể load initial data từ API
+        this.loadProductsFromAPI();
     }
 
     /**
+     * Load products from API
+     */
+    private loadProductsFromAPI(): void {
+        this.http.get<Product[]>(this.apiGetUrl)
+            .pipe(
+                catchError(error => {
+                    console.error('Error loading products from API:', error);
+                    // Fallback to mock data nếu API lỗi
+                    return of(this.allProducts);
+                })
+            )
+            .subscribe(products => {
+                this.allProducts = products;
+                this.productsSubject.next(products);
+            });
+    }    /**
      * Get all products with filters applied
+     * Có thể gọi API với filter params hoặc filter ở client
      */
     public getProducts(filter?: ProductFilter): Product[] {
+        // OPTION 1: Filter ở client (data đã load từ cache/memory)
         let filtered = [...this.allProducts];
 
         if (filter) {
@@ -174,6 +196,62 @@ export class ProductService {
 
         this.productsSubject.next(filtered);
         return filtered;
+    }
+
+    /**
+     * Get products from API with filters (OPTION 2: Server-side filtering)
+     */
+    public getProductsFromAPI(filter?: ProductFilter): Observable<Product[]> {
+        let params = new HttpParams();
+
+        if (filter) {
+            if (filter.categories && filter.categories.length > 0) {
+                params = params.set('categories', filter.categories.join(','));
+            }
+            if (filter.brands && filter.brands.length > 0) {
+                params = params.set('brands', filter.brands.join(','));
+            }
+            if (filter.priceRange) {
+                params = params.set('minPrice', filter.priceRange.min.toString());
+                params = params.set('maxPrice', filter.priceRange.max.toString());
+            }
+            if (filter.rating) {
+                params = params.set('rating', filter.rating.toString());
+            }
+            if (filter.inStock !== undefined) {
+                params = params.set('inStock', filter.inStock.toString());
+            }
+            if (filter.sortBy) {
+                params = params.set('sortBy', filter.sortBy);
+            }
+        }
+
+        return this.http.get<Product[]>(this.apiGetUrl, { params })
+            .pipe(
+                map(products => {
+                    this.allProducts = products;
+                    this.productsSubject.next(products);
+                    return products;
+                }),
+                catchError(error => {
+                    console.error('Error fetching products:', error);
+                    return of([]);
+                })
+            );
+    }
+
+    /**
+     * Get single product by ID
+     */
+    public getProductById(id: number): Observable<Product | undefined> {
+        return this.http.get<Product>(`${this.apiGetUrl}/${id}`)
+            .pipe(
+                catchError(error => {
+                    console.error('Error fetching product:', error);
+                    // Fallback to mock data
+                    return of(this.allProducts.find(p => p.id === id));
+                })
+            );
     }
 
     /**

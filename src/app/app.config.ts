@@ -2,7 +2,8 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter} from '@angular/router';
 
 import { routes } from './app.routes';
-import {provideHttpClient} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { apiInterceptor } from './core/interceptors/api.interceptor';
  
 import { vi_VN, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
@@ -16,7 +17,7 @@ registerLocaleData(vi);
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([apiInterceptor])),
     provideNzI18n(vi_VN), 
     importProvidersFrom(FormsModule), 
     provideAnimationsAsync(),  
